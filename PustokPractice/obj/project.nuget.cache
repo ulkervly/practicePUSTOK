@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1DmSQU/bcDKVcWnGYyTHPxcDLnqfGtVAG6Q0zit2kdOE/7DotA+XUyXokv5bImNd3qphjglkWUqHwWIqZ5GE3A==",
+  "dgSpecHash": "oEiL/tGyfySvRS+SRscWRuLPIACJAQ2cPgD7DqAPJihbp5/3IlgHPHayCWdG/DhB4XsOQh40GenTN4AVSw821A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\II novbe\\Desktop\\Exam\\DateTime\\Practice\\PustokPractice\\PustokPractice\\PustokPractice.csproj",
+  "projectFilePath": "C:\\Users\\II novbe\\Desktop\\PustokPractice\\PustokPractice\\PustokPractice.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\II novbe\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\II novbe\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

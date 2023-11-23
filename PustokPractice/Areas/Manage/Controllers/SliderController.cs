@@ -24,36 +24,42 @@ namespace PustokPractice.Areas.Manage.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Slider slider)
+        public IActionResult Create(Slider slide)
         {
+            string fileName = slide.Image.FileName;
 
-            if (!ModelState.IsValid) return View();
-
-            _context.Sliders.Add(slider);
-            _context.SaveChanges();
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public IActionResult Delete(int id)
-        {
-            Slider slider = _context.Sliders.FirstOrDefault(x => x.id == id);
-            if (slider == null) return NotFound();
-
-            return View(slider);
-        }
-
-        [HttpPost]
-        public IActionResult Delete(Slider slider)
-        {
-            Slider existService1 = _context.Sliders.FirstOrDefault(x => x.id == slider.id);
-            if (existService1 == null)
+            if (slide.Image.ContentType != "image/png" && slide.Image.ContentType != "image/jpeg")
             {
-                return NotFound();
+                ModelState.AddModelError("Image", "please select correct file type");
             }
-            _context.Sliders.Remove(existService1);
+
+            if (slide.Image.Length > 1048576)
+            {
+                ModelState.AddModelError("Image", "file size should be more lower than 1mb ");
+            }
+
+            if (fileName.Length > 64)
+            {
+                fileName = fileName.Substring(fileName.Length - 64, 64);
+            }
+
+            fileName = Guid.NewGuid().ToString() + fileName;
+
+            string path = $"C:\\Users\\elvin\\OneDrive\\Documents\\Sənədlər\\ForFuture-tasks\\MVC-PustokAdmin\\MVC.Practice\\MVC.PracticeTask-1\\wwwroot\\uploads\\bg-slide\\{fileName}";
+
+            using (FileStream fileStream = new FileStream(path, FileMode.Create))
+            {
+                slide.Image.CopyTo(fileStream);
+            }
+
+            slide.ImageUrL= fileName;
+
+         
+
+
+            _context.Sliders.Add(slide);
             _context.SaveChanges();
+
 
             return RedirectToAction("Index");
         }
@@ -61,23 +67,55 @@ namespace PustokPractice.Areas.Manage.Controllers
         [HttpGet]
         public IActionResult Update(int id)
         {
-            Slider slider = _context.Sliders.FirstOrDefault(x => x.id == id);
-            return View(slider);
+            Slider slide = _context.Sliders.FirstOrDefault(x => x.id == id);
+            return View(slide);
         }
 
         [HttpPost]
-        public IActionResult Update(Slider slider)
+        public IActionResult Update(Slider slide)
         {
 
-            Service existService1 = _context.Services.FirstOrDefault(x => x.id == slider.id);
-            if (existService1 == null)
-            {
-                return NotFound();
-            }
-            existService1.Title = slider.Title;
-            existService1.Description = slider.Description;
-            
+            Slider existSlide = _context.Sliders.FirstOrDefault(x => x.Id == slide.Id);
 
+
+
+            existSlide.Title = slide.Title;
+            existSlide.Description = slide.Description;
+            existSlide.ImageUrL = slide.Image.FileName;
+            existSlide.RedirectUrl = slide.RedirectUrl;
+            existSlide.Image = slide.Image;
+
+
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            Slider slide = _context.Sliders.FirstOrDefault(x => x.id == id);
+            return View(slide);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Slider slide)
+        {
+
+            Slider existSlide = _context.Sliders.FirstOrDefault(x => x.id == slide.id);
+
+            string fileName = existSlide.ImageUrL;
+            string path = $"C:\\Users\\\\{fileName}";
+
+            if (existSlide.ImageUrL != null)
+            {
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+            }
+
+            _context.Sliders.Remove(existSlide);
             _context.SaveChanges();
 
             return RedirectToAction("Index");

@@ -11,6 +11,7 @@ namespace PustokPractice.Models
         [Required]
         [StringLength(maximumLength: 500)]
         public string Description { get; set; }
+        public IFormFile Image { get; set; }
         public string ImageUrL {  get; set; }
         public string RedirectUrl {  get; set; }
     }
